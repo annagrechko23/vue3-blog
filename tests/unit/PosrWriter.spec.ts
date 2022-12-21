@@ -27,7 +27,7 @@ describe('Timeline', () => {
 
       done()
     })
-  
 
-  },400)
+
+  }, 400)
 })

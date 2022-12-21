@@ -1,5 +1,5 @@
 <template>
-  <a :key="post.id" class="panel-block">
+<router-link :key="post.id" class="panel-block" :to="to">
     <div class="is-flex is-flex-direction-column is-align-items-flex-start">
 
     <a >
@@ -10,7 +10,7 @@
 
 </div>
 
-  </a>
+</router-link>
 </template>
 
 <script lang="ts">
@@ -24,6 +24,11 @@ export default defineComponent({
       required: true,
     },
   },
+  setup(props) {
+    return{
+      to: `/posts/${props.post.id}`
+    }
+  }
 });
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

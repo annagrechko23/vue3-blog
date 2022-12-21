@@ -56,7 +56,6 @@ export default defineComponent({
         gfm: true,
         breaks: true,
         highlight: (code: string) => {
-          console.log(highlight.highlightAuto(code).value);
           return highlight.highlightAuto(code).value;
         },
       });

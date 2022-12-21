@@ -1,8 +1,8 @@
 import { nextTick } from 'vue';
-import { flushPromises, mount } from "@vue/test-utils";
+import { flushPromises, mount, RouterLinkStub } from "@vue/test-utils";
 import Timeline from '../../src/components/Timeline.vue'
 import { today, thisWeek, thisMonth } from '../../src/mocks'
-
+import { Store } from '../../src/store'
 jest.mock('axios', () => ({
   get: (url: string) => {
     return Promise.resolve({
@@ -11,18 +11,39 @@ jest.mock('axios', () => ({
   }
 }))
 function mountTimeline() {
-  return mount({
+  const store = new Store({
+    posts: {
+      ids: [],
+      all: new Map(),
+      loaded: false
+    },
+    authors: {
+        ids: [],
+        all: new Map(),
+        loaded: false,
+        currentUserId: undefined
+    }
+  })
+  const testComp = {
     components: { Timeline },
     template: `
-    <suspense>
-      <template #default>
-      <timeline />
-      </template>
-      <template #fallback>
-     loading
-      </template>
-    </suspense>
-    `
+  <suspense>
+    <template #default>
+    <timeline />
+    </template>
+    <template #fallback>
+   loading
+    </template>
+  </suspense>
+  `
+  }
+  return mount(testComp, {
+    global: {
+      components: {
+        RouterLink: RouterLinkStub
+      },
+      plugins: [store]
+    }
   })
 }
 describe('Timeline', () => {

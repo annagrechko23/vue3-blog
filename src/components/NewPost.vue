@@ -13,19 +13,23 @@ import { Post } from "../mocks";
 import moment from "moment";
 import { useStore } from '../store'
 import {useRouter} from 'vue-router'
-import { router } from "@/router";
-
 
 export default defineComponent({
   components: { PostWriter },
   setup() {
+     const store = useStore()
+    const router = useRouter()
+    const authorId = store.getState().authors.currentUserId
+    if(!authorId) {
+      throw Error('User not found')
+    }
     const newPost: Post = {
       id: "-1",
       title: "Enter title",
       created: moment().subtract(1, 'second'),
+      authorId: authorId
     };
-    const store = useStore()
-    const router = useRouter()
+   
     const save = async(post: Post) => {
     await  store.createPosts(post)
       router.push('/')
